@@ -1,0 +1,26 @@
+server:
+  port: ${GATEWAY_SERVICE_PORT:8080}
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: service-board-route
+            uri: lb://board
+            predicates:
+              - Path=/api/v1/boards/**
+          - id: service-task-route
+            uri: lb://task
+            predicates:
+              - Path=/api/v1/tasks/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+
